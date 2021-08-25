@@ -26,7 +26,7 @@ A custom loss function was used which is the hybrid of MSE and KL Divergence Los
 ### Learning Rate Scheduling
 
 An exponential learning rate decay function was used:
-&nbsp
+
 learning_rate = initial_learning_rate \* (drop ^ mfloor((1+epoch)/epoch_interval) )
 
 ## Results
@@ -37,15 +37,15 @@ learning_rate = initial_learning_rate \* (drop ^ mfloor((1+epoch)/epoch_interval
 | 12                 | 0.9799   | 0.9803    | 0.9989 | 0.9799   |
 | 14                 | 0.9833   | 0.9846    | 0.9990 | 0.9827   |
 | 16                 | 0.9818   | 0.9828    | 0.9991 | 0.9819   |
-| 18                 | 0.9806   | 0.9824    | 0.9990 | 0.9811   |
-| 20                 | 0.9806   | 0.9824    | 0.9990 | 0.9811   |
-| 22                 | 0.9806   | 0.9824    | 0.9990 | 0.9811   |
-| 24                 | 0.9806   | 0.9824    | 0.9990 | 0.9811   |
+| 18                 | 0.9813   | 0.9823    | 0.9989 | 0.9812   |
+| 20                 | 0.9744   | 0.9768    | 0.9991 | 0.9744   |
+| 22                 | 0.9819   | 0.9832    | 0.9989 | 0.9822   |
+| 24                 | 0.9819   | 0.9833    | 0.9990 | 0.9822   |
 
 ## TO DO
 
-- Modularise the code
+- Modularising the code
 - Combined Binary + Multiclass Classification
-- Multiautoencoder approach
 - Experimenting with custom layer (lambda layer for outputting absolute values)
 - Experimenting with Conv1D layers for the classifier
+- Multiautoencoder approach
