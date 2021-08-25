@@ -4,6 +4,8 @@
 
 This project aims to detect Network Intrusion of the forms Denial of Service (DoS), Probe, User to Root(U2R), and Remote to Local (R2L) using an Autoencoder + ANN Classifier model. The dataset used is [NSL-KDD](https://www.unb.ca/cic/datasets/nsl.html) by University of New Brunswick.
 
+You can run this notebook [here](https://www.kaggle.com/ma1var3/nsl-kdd-classification-using-autoencoders)
+
 ## Dataset
 
 The done analysis done by Gerry Saporito in the article ["A Deeper Dive into the NSL-KDD Data Set"](https://towardsdatascience.com/a-deeper-dive-into-the-nsl-kdd-data-set-15c753364657) , gives some insights about the structure and semantics of the dataset. The dataset has:
@@ -19,18 +21,26 @@ The EDA done on [this](https://www.kaggle.com/stefanost/cnns-for-intrusion-detec
 
 ### Custom Loss Function
 
-A custom loss function was used which is the hybrid of MSE and KL Divergence Loss
+A custom loss function was used which is the hybrid of MSE and KL Divergence Loss, (work in progrss, yet to tune)
 
 ### Learning Rate Scheduling
 
 An exponential learning rate decay function was used:
+&nbsp
 learning_rate = initial_learning_rate \* (drop ^ mfloor((1+epoch)/epoch_interval) )
 
 ## Results
 
 | Encoding Dimention | Accuracy | Precision | AUC    | F1 Score |
 | ------------------ | -------- | --------- | ------ | -------- |
+| 10                 | 0.9804   | 0.9814    | 0.9989 | 0.9802   |
+| 12                 | 0.9806   | 0.9824    | 0.9990 | 0.9811   |
+| 14                 | 0.9806   | 0.9824    | 0.9990 | 0.9811   |
 | 16                 | 0.9806   | 0.9824    | 0.9990 | 0.9811   |
+| 18                 | 0.9806   | 0.9824    | 0.9990 | 0.9811   |
+| 20                 | 0.9806   | 0.9824    | 0.9990 | 0.9811   |
+| 22                 | 0.9806   | 0.9824    | 0.9990 | 0.9811   |
+| 24                 | 0.9806   | 0.9824    | 0.9990 | 0.9811   |
 
 ## TO DO
 
