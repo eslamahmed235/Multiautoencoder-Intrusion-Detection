@@ -27,7 +27,7 @@ A custom loss function was used which is the hybrid of MSE and KL Divergence Los
 
 An exponential learning rate decay function was used:
 
-learning_rate = initial_learning_rate \* (drop ^ mfloor((1+epoch)/epoch_interval) )
+learning_rate = initial_learning_rate \* (drop ^ floor((1+epoch)/epoch_interval) )
 
 ## Results
 
