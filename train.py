@@ -28,8 +28,15 @@ def scaleData(X_train, X_test):
 
     return X_train, X_test
 
-def reduceFeaturespace():
-    pass
+def reduceFeaturespace(X_train, X_test, y_train):
+    from sklearn.feature_selection import RFE
+    from sklearn.tree import DecisionTreeClassifier
+    DTC = DecisionTreeClassifier()
+    rfe = RFE(DTC, n_features_to_select= feature_dim).fit(X_train,y_train)
+    indices = np.where(rfe.support_==True)[0]
+    features = X_train.columns.values[indices]
+    X_train, X_test = X_train[features], X_test[features]
+    return X_train, X_test
 
 def getdata():
     import pandas as pd
@@ -42,10 +49,15 @@ def getdata():
     df = encodeCategorical(df)
     x = df.drop('labels', axis=1)
     y = df.loc[:, ['labels']]
+    
     X_train, X_test, y_train, y_test = train_test_split(x, y, test_size=.2, random_state=42)
+    
     X_train, X_test = scaleData(X_train, X_test)
+
     y_train = np_utils.to_categorical(y_train)
     y_test = np_utils.to_categorical(y_test)
+
+    X_train, X_test = reduceFeaturespace(X_train, X_test, y_train)
 
     return X_train, X_test, y_train, y_test
 
