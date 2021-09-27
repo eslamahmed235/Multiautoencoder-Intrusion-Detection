@@ -35,19 +35,20 @@ class BinaryAutoencoder:
         self.autoencoder = autoencoder
         self.encoder = encoder
 
-    def LRschedulerAE(epoch, lr):
-        import tensorflow as tf
-        if epoch < 20:
-            return lr
-        else:
-            return lr * tf.math.exp(-0.1)
+    def LRschedulerAE(epoch):
+        initial_lrate = 0.01
+        drop = 0.005
+        epochs_drop = 5.0
+        lrate = initial_lrate * math.pow(drop,  
+            math.floor((1+epoch)/epochs_drop))
+        return lrate
 
     def train(self, x_train, x_test):
         import tensorflow as tf
 
         self.build_model()
 
-        ae_lr = tf.keras.callbacks.LearningRateScheduler(self.LRschedulerAE)
+        ae_lr = tf.keras.callbacks.LearningRateScheduler(self.LRschedulerAE())
 
         history = self.autoencoder.fit(x_train, x_train, 
                     epochs=self.epochs,
