@@ -19,7 +19,7 @@ def encodeCategorical(df):
 
 def scaleData(X_train, X_test):
     from sklearn.preprocessing import StandardScaler
-
+    import pandas as pd
     sc = StandardScaler()
     X_train = sc.fit_transform(X_train)
     X_train = pd.DataFrame(X_train)
@@ -45,7 +45,7 @@ def getdata():
     import keras
     from keras.utils import np_utils
 
-    df = pd.read_csv('../input/nslkdd/kdd_train.csv')
+    df = pd.read_csv('./datasets/NSLKDD/kdd_train.csv')
     df = encodeCategorical(df)
     x = df.drop('labels', axis=1)
     y = df.loc[:, ['labels']]
@@ -62,4 +62,8 @@ def getdata():
     return X_train, X_test, y_train, y_test
 
 if __name__ == "__main__":
-    pass
+    X_train, X_test, y_train, y_test = getdata()
+    print(X_train.shape)
+    print(X_test.shape)
+    print(y_train.shape)
+    print(y_test.shape)
