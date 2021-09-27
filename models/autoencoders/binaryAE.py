@@ -4,7 +4,7 @@ class BinaryAutoencoder:
         self.encoding_dim = enc_dim 
         self.epochs = epochs
         self.batch_size = batch_size
-        self.build_model
+        self.build_model()
 
     def build_model(self):
 
@@ -16,14 +16,14 @@ class BinaryAutoencoder:
         
         ae_input_layer = Input(shape=(self.input_dim, ))
 
-        enc = Dense(32, activation="swish")(ae_input_layer)
+        enc = Dense(32, activation="relu")(ae_input_layer)
         enc = BatchNormalization()(enc)
-        enc = Dense(self.encoding_dim, activation="swish")(enc)
+        enc = Dense(self.encoding_dim, activation="relu")(enc)
 
         dec = BatchNormalization()(enc)
-        dec = Dense(32, activation="swish")(dec)
+        dec = Dense(32, activation="relu")(dec)
         dec = BatchNormalization()(enc)
-        dec = Dense(self.input_dim, activation="swish")(dec)
+        dec = Dense(self.input_dim, activation="relu")(dec)
 
         autoencoder = Model(inputs=ae_input_layer, outputs=dec)
         encoder = Model(inputs=ae_input_layer, outputs=enc)
