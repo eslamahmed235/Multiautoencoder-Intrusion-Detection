@@ -4,8 +4,12 @@ class BinaryAutoencoder:
         self.encoding_dim = enc_dim 
         self.epochs = epochs
         self.batch_size = batch_size
+        self.build_model
 
     def build_model(self):
+
+        print("Building Autoencoder for binary classification.....")
+
         import tensorflow.keras as k
         from tensorflow.keras.layers import Input, Dense, BatchNormalization, Dropout
         from tensorflow.keras.models import Model
@@ -24,6 +28,9 @@ class BinaryAutoencoder:
         autoencoder = Model(inputs=ae_input_layer, outputs=dec)
         encoder = Model(inputs=ae_input_layer, outputs=enc)
         autoencoder.compile(optimizer='adam', loss="mean_squared_error", metrics=['accuracy'])
+
+        autoencoder.summary()
+        encoder.summary()
 
         self.autoencoder = autoencoder
         self.encoder = encoder

@@ -32,7 +32,7 @@ def reduceFeaturespace(X_train, X_test, y_train):
     from sklearn.feature_selection import RFE
     from sklearn.tree import DecisionTreeClassifier
     import numpy as np
-    
+
     DTC = DecisionTreeClassifier()
     rfe = RFE(DTC, n_features_to_select= feature_dim).fit(X_train,y_train)
     indices = np.where(rfe.support_==True)[0]
@@ -64,8 +64,13 @@ def getdata():
     return X_train, X_test, y_train, y_test
 
 if __name__ == "__main__":
+    from models.autoencoders.binaryAE import BinaryAutoencoder
+
     X_train, X_test, y_train, y_test = getdata()
     print(X_train.shape)
     print(X_test.shape)
     print(y_train.shape)
     print(y_test.shape)
+
+    binary_ae = BinaryAutoencoder(inp_dim= feature_dim, enc_dim= encoding_dim, epochs= 50, batch_size=32)
+    
