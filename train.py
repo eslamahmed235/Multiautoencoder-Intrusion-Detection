@@ -74,4 +74,6 @@ if __name__ == "__main__":
 
     binary_ae = BinaryAutoencoder(inp_dim= feature_dim, enc_dim= encoding_dim, epochs= 50, batch_size=32)
     binary_ae.train(X_train, X_test)
+    binary_ae.freeze_encoder()
+    
 
