@@ -31,6 +31,8 @@ def scaleData(X_train, X_test):
 def reduceFeaturespace(X_train, X_test, y_train):
     from sklearn.feature_selection import RFE
     from sklearn.tree import DecisionTreeClassifier
+    import numpy as np
+    
     DTC = DecisionTreeClassifier()
     rfe = RFE(DTC, n_features_to_select= feature_dim).fit(X_train,y_train)
     indices = np.where(rfe.support_==True)[0]
