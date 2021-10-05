@@ -65,6 +65,7 @@ def getdata():
 
 if __name__ == "__main__":
     from models.autoencoders.binaryAE import BinaryAutoencoder
+    from models.classifiers.CNN import CNNClassifier
 
     X_train, X_test, y_train, y_test = getdata()
     print(X_train.shape)
@@ -75,5 +76,7 @@ if __name__ == "__main__":
     binary_ae = BinaryAutoencoder(inp_dim= feature_dim, enc_dim= encoding_dim, epochs= 50, batch_size=32)
     binary_ae.train(X_train, X_test)
     binary_ae.freeze_encoder()
-    
+    encoder = binary_ae.encoder
+
+    classifier = CNNClassifier(encoder= encoder,feature_dim= feature_dim)
 

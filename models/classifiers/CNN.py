@@ -1,6 +1,7 @@
 class CNNClassifier:
-    def __init__(self):
-        pass
+    def __init__(self, encoder, feature_dim):
+        self.encoder = encoder
+        self.feature_dim = feature_dim
     
     def build_model(self):
 
@@ -10,7 +11,7 @@ class CNNClassifier:
         
         input_layer = Input(shape=(feature_dim, ))
 
-        encoding = encoder(input_layer, training=False)
+        encoding = self.encoder(input_layer, training=False)
 
         layer1 = Dense(64, activation="relu")(encoding)
         layer1 = BatchNormalization()(layer1)
