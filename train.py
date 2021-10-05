@@ -79,4 +79,5 @@ if __name__ == "__main__":
     encoder = binary_ae.encoder
 
     classifier = CNNClassifier(encoder= encoder,feature_dim= feature_dim)
+    
 

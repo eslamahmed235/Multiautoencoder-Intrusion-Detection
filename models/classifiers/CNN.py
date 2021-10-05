@@ -1,7 +1,9 @@
 class CNNClassifier:
-    def __init__(self, encoder, feature_dim):
+    def __init__(self, encoder, feature_dim, epochs, batch_size):
         self.encoder = encoder
         self.feature_dim = feature_dim
+        self.epochs = epochs
+        self.batch_size = batch_size
     
     def build_model(self):
 
@@ -32,10 +34,34 @@ class CNNClassifier:
         output_layer = Dense(23, activation="softmax")(layer4)
 
         classifier = Model(inputs=input_layer ,outputs=output_layer)
+        classifier.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy', 'Precision', 'AUC'])
+        classifier.summary()
 
-    def train():
-        pass
+        self.classifier = classifier
 
+    def train(self, x_train, y_train, x_test, y_test):
+        import tensorflow as tf
+
+        self.build_model()
+
+        def LRschedulerAE(epoch):
+            import math
+            initial_lrate = 0.01
+            drop = 0.005
+            epochs_drop = 5.0
+            lrate = initial_lrate * math.pow(drop,  
+                math.floor((1+epoch)/epochs_drop))
+            return lrate
+
+        clf_lr = tf.keras.callbacks.LearningRateScheduler(LRschedulerAE)
+
+        history = self.classifier.fit(x_train, y_train,
+                    epochs=self.epochs,
+                    batch_size=self.batch_size,
+                    shuffle=True,
+                    validation_data=(x_test, y_test),
+                    callbacks=[clf_lr],
+                    verbose=1).history
     def predict():
         pass
 
