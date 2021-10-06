@@ -99,13 +99,14 @@ if __name__ == "__main__":
     print(y_train.shape)
     print(y_test.shape)
     getbinarylabels(label_encodings)
-    # y_train_binary, y_test_binary = getbinarylabels(y_train, y_test)
-    # X_train_multi, X_test_multi, y_train_multi, y_test_multi = getmaliciousdata()
-    # binary_ae = BinaryAutoencoder(inp_dim= feature_dim, enc_dim= encoding_dim, epochs= 10, batch_size=32)
-    # binary_ae.train(X_train, X_test)
-    # binary_ae.freeze_encoder()
-    # encoder = binary_ae.encoder
+    
+    y_train_binary, y_test_binary = getbinarylabels(y_train, y_test)
+    X_train_multi, X_test_multi, y_train_multi, y_test_multi = getmaliciousdata()
+    binary_ae = BinaryAutoencoder(inp_dim= feature_dim, enc_dim= encoding_dim, epochs= 10, batch_size=32)
+    binary_ae.train(X_train, X_test)
+    binary_ae.freeze_encoder()
+    encoder = binary_ae.encoder
 
-    # classifier = CNNClassifier(encoder= encoder,feature_dim= feature_dim, epochs= 20, batch_size=32)
-    # classifier.train(X_train, y_train, X_test, y_test)
+    classifier = CNNClassifier(encoder= encoder,feature_dim= feature_dim, epochs= 20, batch_size=32)
+    classifier.train(X_train, y_train, X_test, y_test)
 
