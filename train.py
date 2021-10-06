@@ -81,10 +81,10 @@ def getbinarydata():
     
     X_train, X_test = scaleData(X_train, X_test)
 
-    # y_train = np_utils.to_categorical(y_train)
-    # y_test = np_utils.to_categorical(y_test)
+    y_train = np_utils.to_categorical(y_train)
+    y_test = np_utils.to_categorical(y_test)
 
-    # X_train, X_test = reduceFeaturespace(X_train, X_test, y_train)
+    X_train, X_test = reduceFeaturespace(X_train, X_test, y_train)
 
     return X_train, X_test, y_train, y_test
     
