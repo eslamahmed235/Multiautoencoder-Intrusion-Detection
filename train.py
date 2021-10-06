@@ -48,7 +48,7 @@ def getdata():
     from keras.utils import np_utils
 
     df = pd.read_csv('./datasets/NSLKDD/kdd_train.csv')
-    df = encodeCategorical(df)
+    df= encodeCategorical(df)
     x = df.drop('labels', axis=1)
     y = df.loc[:, ['labels']]
     
@@ -59,25 +59,53 @@ def getdata():
     y_train = np_utils.to_categorical(y_train)
     y_test = np_utils.to_categorical(y_test)
 
-    X_train, X_test = reduceFeaturespace(X_train, X_test, y_train)
+    # X_train, X_test = reduceFeaturespace(X_train, X_test, y_train)
 
     return X_train, X_test, y_train, y_test
+
+def getbinarydata():
+    import pandas as pd
+    import numpy as np
+    from sklearn.model_selection import train_test_split
+    import keras
+    from keras.utils import np_utils
+
+    df = pd.read_csv('./datasets/NSLKDD/kdd_train.csv')
+    df['is_attacked'] = df.apply(lambda x: 0 if df['labels']=="normal" else 1)
+    df= encodeCategorical(df)
+    x = df.drop('labels', axis=1)
+    x = x.drop('is_attacked', axis=1)
+    y = df.loc[:, ['is_attacked']]
+    
+    X_train, X_test, y_train, y_test = train_test_split(x, y, test_size=.2, random_state=42)
+    
+    X_train, X_test = scaleData(X_train, X_test)
+
+    # y_train = np_utils.to_categorical(y_train)
+    # y_test = np_utils.to_categorical(y_test)
+
+    # X_train, X_test = reduceFeaturespace(X_train, X_test, y_train)
+
+    return X_train, X_test, y_train, y_test
+    
 
 if __name__ == "__main__":
     from models.autoencoders.binaryAE import BinaryAutoencoder
     from models.classifiers.CNN import CNNClassifier
 
-    X_train, X_test, y_train, y_test = getdata()
+    X_train, X_test, y_train, y_test, label_encodings = getdata()
     print(X_train.shape)
     print(X_test.shape)
     print(y_train.shape)
     print(y_test.shape)
+    getbinarylabels(label_encodings)
+    # y_train_binary, y_test_binary = getbinarylabels(y_train, y_test)
+    # X_train_multi, X_test_multi, y_train_multi, y_test_multi = getmaliciousdata()
+    # binary_ae = BinaryAutoencoder(inp_dim= feature_dim, enc_dim= encoding_dim, epochs= 10, batch_size=32)
+    # binary_ae.train(X_train, X_test)
+    # binary_ae.freeze_encoder()
+    # encoder = binary_ae.encoder
 
-    binary_ae = BinaryAutoencoder(inp_dim= feature_dim, enc_dim= encoding_dim, epochs= 50, batch_size=32)
-    binary_ae.train(X_train, X_test)
-    binary_ae.freeze_encoder()
-    encoder = binary_ae.encoder
-
-    classifier = CNNClassifier(encoder= encoder,feature_dim= feature_dim)
-    
+    # classifier = CNNClassifier(encoder= encoder,feature_dim= feature_dim, epochs= 20, batch_size=32)
+    # classifier.train(X_train, y_train, X_test, y_test)
 

@@ -11,7 +11,7 @@ class CNNClassifier:
         from tensorflow.keras.layers import Input, Dense, BatchNormalization, Dropout
         from tensorflow.keras.models import Model
         
-        input_layer = Input(shape=(feature_dim, ))
+        input_layer = Input(shape=(self.feature_dim, ))
 
         encoding = self.encoder(input_layer, training=False)
 
