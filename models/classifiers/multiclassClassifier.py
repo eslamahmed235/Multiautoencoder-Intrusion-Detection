@@ -1,7 +1,8 @@
 class MulticlassClassifier:
-    def __init__(self, encoder, feature_dim, epochs, batch_size):
+    def __init__(self, encoder, feature_dim, num_classes, epochs, batch_size):
         self.encoder = encoder
         self.feature_dim = feature_dim
+        self.num_classes= num_classes
         self.epochs = epochs
         self.batch_size = batch_size
     
@@ -31,7 +32,7 @@ class MulticlassClassifier:
         layer4 = BatchNormalization()(layer4)
         layer4 = Dropout(0.2)(layer4)
 
-        output_layer = Dense(23, activation="softmax")(layer4)
+        output_layer = Dense(self.num_classes, activation="softmax")(layer4)
 
         classifier = Model(inputs=input_layer ,outputs=output_layer)
         classifier.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy', 'Precision', 'AUC'])

@@ -115,7 +115,9 @@ def getattackdata():
 
 if __name__ == "__main__":
     from models.autoencoders.binaryAE import BinaryAutoencoder
+    from models.autoencoders.multiAE import MultiAutoencoder
     from models.classifiers.binaryClassifier import BinaryClassifier
+    from models.classifiers.multiclassClassifier import MulticlassClassifier
 
     X_train, X_test, y_train, y_test = getdata()
     
@@ -140,6 +142,19 @@ if __name__ == "__main__":
     # b_classifier.train(X_train_bin, y_train_bin, X_test_bin, y_test_bin)
 
     X_train_multi, X_test_multi, y_train_multi, y_test_multi = getattackdata()
+    
+    print(X_train_multi.shape)
+    print(X_test_multi.shape)
+    print(y_train_multi.shape)
+    print(y_test_multi.shape)
+
+    multi_ae = MultiAutoencoder(inp_dim= feature_dim, enc_dim= encoding_dim, epochs= 10, batch_size=32)
+    multi_ae.train(X_train_multi, X_test_multi)
+    multi_ae.freeze_encoder()
+    encoder = multi_ae.encoder
+
+    multi_classifier = MulticlassClassifier(encoder= encoder,feature_dim= feature_dim, num_classes = y_test_multi.shape[1] ,epochs= 20, batch_size=32)
+    multi_classifier.train(X_train_multi, y_train_multi, X_test_multi, y_test_multi)
 
     # classifier = CNNClassifier(encoder= encoder,feature_dim= feature_dim, epochs= 20, batch_size=32)
     # classifier.train(X_train, y_train, X_test, y_test)
