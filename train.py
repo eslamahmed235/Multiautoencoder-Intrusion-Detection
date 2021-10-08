@@ -87,7 +87,31 @@ def getbinarydata():
     X_train, X_test = reduceFeaturespace(X_train, X_test, y_train)
 
     return X_train, X_test, y_train, y_test
+
+def getattackdata():
+    import pandas as pd
+    import numpy as np
+    from sklearn.model_selection import train_test_split
+    import keras
+    from keras.utils import np_utils
+
+    df = pd.read_csv('./datasets/NSLKDD/kdd_train.csv')
+    idx = np.where(df['labels']=='normal')[0]
+    df = df.drop(idx)
+    df= encodeCategorical(df)
+    x = df.drop('labels', axis=1)
+    y = df.loc[:, ['labels']]
     
+    X_train, X_test, y_train, y_test = train_test_split(x, y, test_size=.2, random_state=42)
+    
+    X_train, X_test = scaleData(X_train, X_test)
+
+    y_train = np_utils.to_categorical(y_train)
+    y_test = np_utils.to_categorical(y_test)
+
+    X_train, X_test = reduceFeaturespace(X_train, X_test, y_train)
+
+    return X_train, X_test, y_train, y_test
 
 if __name__ == "__main__":
     from models.autoencoders.binaryAE import BinaryAutoencoder
@@ -100,20 +124,22 @@ if __name__ == "__main__":
     print(y_train.shape)
     print(y_test.shape)
     
-    X_train_bin, X_test_bin, y_train_bin, y_test_bin = getbinarydata()
+    # X_train_bin, X_test_bin, y_train_bin, y_test_bin = getbinarydata()
     
-    print(X_train_bin.shape)
-    print(X_test_bin.shape)
-    print(y_train_bin.shape)
-    print(y_test_bin.shape)
+    # print(X_train_bin.shape)
+    # print(X_test_bin.shape)
+    # print(y_train_bin.shape)
+    # print(y_test_bin.shape)
 
-    binary_ae = BinaryAutoencoder(inp_dim= feature_dim, enc_dim= encoding_dim, epochs= 10, batch_size=32)
-    binary_ae.train(X_train_bin, X_test_bin)
-    binary_ae.freeze_encoder()
-    encoder = binary_ae.encoder
+    # binary_ae = BinaryAutoencoder(inp_dim= feature_dim, enc_dim= encoding_dim, epochs= 10, batch_size=32)
+    # binary_ae.train(X_train_bin, X_test_bin)
+    # binary_ae.freeze_encoder()
+    # encoder = binary_ae.encoder
 
-    b_classifier = BinaryClassifier(encoder= encoder,feature_dim= feature_dim, epochs= 20, batch_size=32)
-    b_classifier.train(X_train_bin, y_train_bin, X_test_bin, y_test_bin)
+    # b_classifier = BinaryClassifier(encoder= encoder,feature_dim= feature_dim, epochs= 20, batch_size=32)
+    # b_classifier.train(X_train_bin, y_train_bin, X_test_bin, y_test_bin)
+
+    X_train_multi, X_test_multi, y_train_multi, y_test_multi = getattackdata()
 
     # classifier = CNNClassifier(encoder= encoder,feature_dim= feature_dim, epochs= 20, batch_size=32)
     # classifier.train(X_train, y_train, X_test, y_test)
