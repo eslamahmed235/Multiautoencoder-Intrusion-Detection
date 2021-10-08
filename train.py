@@ -126,20 +126,20 @@ if __name__ == "__main__":
     print(y_train.shape)
     print(y_test.shape)
     
-    # X_train_bin, X_test_bin, y_train_bin, y_test_bin = getbinarydata()
+    X_train_bin, X_test_bin, y_train_bin, y_test_bin = getbinarydata()
     
-    # print(X_train_bin.shape)
-    # print(X_test_bin.shape)
-    # print(y_train_bin.shape)
-    # print(y_test_bin.shape)
+    print(X_train_bin.shape)
+    print(X_test_bin.shape)
+    print(y_train_bin.shape)
+    print(y_test_bin.shape)
 
-    # binary_ae = BinaryAutoencoder(inp_dim= feature_dim, enc_dim= encoding_dim, epochs= 10, batch_size=32)
-    # binary_ae.train(X_train_bin, X_test_bin)
-    # binary_ae.freeze_encoder()
-    # encoder = binary_ae.encoder
+    binary_ae = BinaryAutoencoder(inp_dim= feature_dim, enc_dim= encoding_dim, epochs= 10, batch_size=32)
+    binary_ae.train(X_train_bin, X_test_bin)
+    binary_ae.freeze_encoder()
+    binary_encoder = binary_ae.encoder
 
-    # b_classifier = BinaryClassifier(encoder= encoder,feature_dim= feature_dim, epochs= 20, batch_size=32)
-    # b_classifier.train(X_train_bin, y_train_bin, X_test_bin, y_test_bin)
+    b_classifier = BinaryClassifier(encoder= binary_encoder,feature_dim= feature_dim, epochs= 20, batch_size=32)
+    b_classifier.train(X_train_bin, y_train_bin, X_test_bin, y_test_bin)
 
     X_train_multi, X_test_multi, y_train_multi, y_test_multi = getattackdata()
     
@@ -151,9 +151,9 @@ if __name__ == "__main__":
     multi_ae = MultiAutoencoder(inp_dim= feature_dim, enc_dim= encoding_dim, epochs= 10, batch_size=32)
     multi_ae.train(X_train_multi, X_test_multi)
     multi_ae.freeze_encoder()
-    encoder = multi_ae.encoder
+    multi_encoder = multi_ae.encoder
 
-    multi_classifier = MulticlassClassifier(encoder= encoder,feature_dim= feature_dim, num_classes = y_test_multi.shape[1] ,epochs= 20, batch_size=32)
+    multi_classifier = MulticlassClassifier(encoder= multi_encoder,feature_dim= feature_dim, num_classes = y_test_multi.shape[1] ,epochs= 20, batch_size=32)
     multi_classifier.train(X_train_multi, y_train_multi, X_test_multi, y_test_multi)
 
     # classifier = CNNClassifier(encoder= encoder,feature_dim= feature_dim, epochs= 20, batch_size=32)
