@@ -1,4 +1,4 @@
-class CNNClassifier:
+class BinaryClassifier:
     def __init__(self, encoder, feature_dim, epochs, batch_size):
         self.encoder = encoder
         self.feature_dim = feature_dim
@@ -31,10 +31,10 @@ class CNNClassifier:
         layer4 = BatchNormalization()(layer4)
         layer4 = Dropout(0.2)(layer4)
 
-        output_layer = Dense(23, activation="softmax")(layer4)
+        output_layer = Dense(1, activation="softmax")(layer4)
 
         classifier = Model(inputs=input_layer ,outputs=output_layer)
-        classifier.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy', 'Precision', 'AUC'])
+        classifier.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy', 'Precision', 'AUC'])
         classifier.summary()
 
         self.classifier = classifier

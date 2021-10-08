@@ -71,7 +71,7 @@ def getbinarydata():
     from keras.utils import np_utils
 
     df = pd.read_csv('./datasets/NSLKDD/kdd_train.csv')
-    df['is_attacked'] = df.apply(lambda x: 0 if df['labels']=="normal" else 1)
+    df['is_attacked'] = df.apply(lambda x: 0 if x['labels']=='normal' else 1, axis=1)
     df= encodeCategorical(df)
     x = df.drop('labels', axis=1)
     x = x.drop('is_attacked', axis=1)
@@ -84,28 +84,36 @@ def getbinarydata():
     # y_train = np_utils.to_categorical(y_train)
     # y_test = np_utils.to_categorical(y_test)
 
-    # X_train, X_test = reduceFeaturespace(X_train, X_test, y_train)
+    X_train, X_test = reduceFeaturespace(X_train, X_test, y_train)
 
     return X_train, X_test, y_train, y_test
     
 
 if __name__ == "__main__":
     from models.autoencoders.binaryAE import BinaryAutoencoder
-    from models.classifiers.CNN import CNNClassifier
+    from models.classifiers.binaryClassifier import BinaryClassifier
 
-    X_train, X_test, y_train, y_test, label_encodings = getdata()
+    X_train, X_test, y_train, y_test = getdata()
+    
     print(X_train.shape)
     print(X_test.shape)
     print(y_train.shape)
     print(y_test.shape)
-    getbinarylabels(label_encodings)
+    
+    X_train_bin, X_test_bin, y_train_bin, y_test_bin = getbinarydata()
+    
+    print(X_train_bin.shape)
+    print(X_test_bin.shape)
+    print(y_train_bin.shape)
+    print(y_test_bin.shape)
 
-    # y_train_binary, y_test_binary = getbinarylabels(y_train, y_test)
-    # X_train_multi, X_test_multi, y_train_multi, y_test_multi = getmaliciousdata()
-    # binary_ae = BinaryAutoencoder(inp_dim= feature_dim, enc_dim= encoding_dim, epochs= 10, batch_size=32)
-    # binary_ae.train(X_train, X_test)
-    # binary_ae.freeze_encoder()
-    # encoder = binary_ae.encoder
+    binary_ae = BinaryAutoencoder(inp_dim= feature_dim, enc_dim= encoding_dim, epochs= 10, batch_size=32)
+    binary_ae.train(X_train_bin, X_test_bin)
+    binary_ae.freeze_encoder()
+    encoder = binary_ae.encoder
+
+    b_classifier = BinaryClassifier(encoder= encoder,feature_dim= feature_dim, epochs= 20, batch_size=32)
+    b_classifier.train(X_train_bin, y_train_bin, X_test_bin, y_test_bin)
 
     # classifier = CNNClassifier(encoder= encoder,feature_dim= feature_dim, epochs= 20, batch_size=32)
     # classifier.train(X_train, y_train, X_test, y_test)
