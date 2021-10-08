@@ -1,4 +1,4 @@
-NUM_FOLDS = 5
+NUM_FOLDS = 3
 feature_dim = 32
 encoding_dim = 16
 ae_epoch = 30
@@ -120,20 +120,20 @@ def train_binary(x, y):
         print('-'*15, '>', f'Fold {fold+1}', '<', '-'*15)
         X_train, X_valid = x.iloc[train_idx], x.iloc[test_idx]
         y_train, y_valid = y.iloc[train_idx], y.iloc[test_idx]
-        binary_ae = BinaryAutoencoder(inp_dim= feature_dim, enc_dim= encoding_dim, epochs= 5, batch_size=32)
+        binary_ae = BinaryAutoencoder(inp_dim= feature_dim, enc_dim= encoding_dim, epochs= 1, batch_size=32)
         binary_ae.train(X_train, X_valid)
         binary_ae.freeze_encoder()
         binary_encoder = binary_ae.encoder
 
-        b_classifier = BinaryClassifier(encoder= binary_encoder,feature_dim= feature_dim, epochs= 5, batch_size=32)
+        b_classifier = BinaryClassifier(encoder= binary_encoder,feature_dim= feature_dim, epochs= 1, batch_size=32)
         history = b_classifier.train(X_train, y_train, X_valid, y_valid)
         histories.append([history])
     
     print('Printing histories')
 
-    for i in len(histories):
+    for i in range(len(histories)):
         print('-'*15, '>', f'Fold {fold+1}', '<', '-'*15)
-        print(histories[i].keys())
+        print(histories[i])
 
 if __name__ == "__main__":
     
