@@ -31,7 +31,7 @@ class BinaryClassifier:
         layer4 = BatchNormalization()(layer4)
         layer4 = Dropout(0.2)(layer4)
 
-        output_layer = Dense(1, activation="softmax")(layer4)
+        output_layer = Dense(1, activation="sigmoid")(layer4)
 
         classifier = Model(inputs=input_layer ,outputs=output_layer)
         classifier.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy', 'Precision', 'AUC'])
