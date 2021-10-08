@@ -38,8 +38,6 @@ class BinaryAutoencoder:
     def train(self, x_train, x_test):
         import tensorflow as tf
 
-        self.build_model()
-
         def LRschedulerAE(epoch):
             import math
             initial_lrate = 0.01

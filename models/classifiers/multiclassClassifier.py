@@ -63,6 +63,7 @@ class MulticlassClassifier:
                     validation_data=(x_test, y_test),
                     callbacks=[clf_lr],
                     verbose=1).history
+        return history
     def predict():
         pass
 
