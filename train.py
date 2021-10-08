@@ -132,7 +132,7 @@ def train_binary(x, y):
     print('Printing histories')
 
     for i in range(len(histories)):
-        print('-'*15, '>', f'Fold {fold+1}', '<', '-'*15)
+        print('-'*15, '>', f'Fold {i+1}', '<', '-'*15)
         print(histories[i])
 
 if __name__ == "__main__":
