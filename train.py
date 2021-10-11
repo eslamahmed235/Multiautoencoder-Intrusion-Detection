@@ -89,11 +89,6 @@ if __name__ == "__main__":
     
     # X_train, X_test, y_train, y_test = getdata()
     
-    # print(X_train.shape)
-    # print(X_test.shape)
-    # print(y_train.shape)
-    # print(y_test.shape)
-    
     X_bin, y_bin = getbinarydata(feature_dim)
     
     print(X_bin.shape)
@@ -101,20 +96,20 @@ if __name__ == "__main__":
 
     bin_history, bin_params = train_binary(X_bin, y_bin)
  
-    x_multi, y_multi = getattackdata(feature_dim)
+    # x_multi, y_multi = getattackdata(feature_dim)
     
-    print(x_multi.shape)
-    print(y_multi.shape)
+    # print(x_multi.shape)
+    # print(y_multi.shape)
 
-    multi_history, multi_params = train_multi(x_multi, y_multi)
+    # multi_history, multi_params = train_multi(x_multi, y_multi)
 
-    print('\n\n\n')
-    print('Printing Binary Classification histories')
-    print('\nParams: ',bin_params)
-    print_histories(bin_history)
-    print('\n\n')
-    print('Printing Multiclass Classification histories')
-    print('\nParams: ',multi_params)
-    print_histories(multi_history)
+    # print('\n\n\n')
+    # print('Printing Binary Classification histories')
+    # print('\nParams: ',bin_params)
+    # print_histories(bin_history)
+    # print('\n\n')
+    # print('Printing Multiclass Classification histories')
+    # print('\nParams: ',multi_params)
+    # print_histories(multi_history)
 
 
