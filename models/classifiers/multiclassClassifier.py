@@ -36,7 +36,7 @@ class MulticlassClassifier:
         output_layer = Dense(self.num_classes, activation="softmax")(layer4)
 
         classifier = Model(inputs=input_layer ,outputs=output_layer)
-        classifier.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy', 'Precision', 'AUC', tfa.metrics.F1Score(num_classes=1, average='macro')])
+        classifier.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy', 'Precision', 'AUC', tfa.metrics.F1Score(num_classes=self.num_classes, average='macro')])
         classifier.summary()
 
         self.classifier = classifier
