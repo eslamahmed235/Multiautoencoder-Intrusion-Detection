@@ -16,7 +16,7 @@ def train_binary(x, y):
     from models.classifiers.binaryClassifier import BinaryClassifier  
     from sklearn.model_selection import StratifiedKFold
     import numpy as np
-
+    
     histories = []
     
     kf = StratifiedKFold(n_splits=NUM_FOLDS, shuffle=True, random_state=2021) 
