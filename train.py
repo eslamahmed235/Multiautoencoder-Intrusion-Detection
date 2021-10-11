@@ -74,8 +74,8 @@ def train_multi(x, y):
     enc_nonTrainableParams = np.sum([np.prod(v.get_shape()) for v in multi_encoder.non_trainable_weights])
     enc_totalParams = enc_trainableParams + enc_nonTrainableParams
 
-    clf_trainableParams = np.sum([np.prod(v.get_shape()) for v in multi_classifier.trainable_weights])
-    clf_nonTrainableParams = np.sum([np.prod(v.get_shape()) for v in multi_classifier.non_trainable_weights])
+    clf_trainableParams = np.sum([np.prod(v.get_shape()) for v in multi_classifier.classifier.trainable_weights])
+    clf_nonTrainableParams = np.sum([np.prod(v.get_shape()) for v in multi_classifier.classifier.non_trainable_weights])
     clf_totalParams = clf_trainableParams + clf_nonTrainableParams
     
     totalParams = enc_totalParams + clf_totalParams
