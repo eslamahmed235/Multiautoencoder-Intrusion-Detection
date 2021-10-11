@@ -39,6 +39,7 @@ def getbinarydata(feature_dim):
     
     x = df.drop('labels', axis=1)
     x = x.drop('is_attacked', axis=1)
+    x = x.drop('level', axis=1)
     y = df.loc[:, ['is_attacked']]
     
     x = scaleData(x)
@@ -47,7 +48,7 @@ def getbinarydata(feature_dim):
 
     return x, y
 
-def getattackdata(feature_dim):
+def getattackdata(feature_dim, category):
     import pandas as pd
     import numpy as np
     from sklearn.model_selection import train_test_split
@@ -55,10 +56,19 @@ def getattackdata(feature_dim):
     from keras.utils import np_utils
     from preprocessing import encodeCategorical, scaleData, reduceFeaturespace
     
-    df = pd.read_csv('./datasets/NSLKDD/kdd_train.csv')
-    idx = np.where(df['labels']=='normal')[0]
+    df = pd.read_csv('./datasets/NSLKDD/KDDTrain+.txt')
+    cols = get_cols()
+    df.columns = cols
+    print(df.columns)
+    categories = get_labels(category)
+    df['drop'] = df.apply(lambda x: 0 if x['labels'] == (l for l in categories) else 1)
+    idx = np.where(df['drop']==1)[0]
     df = df.drop(idx)
     
+    
+    # idx = np.where(df['labels'] != x for x in labels)[0]
+    # df = df.drop(idx)
+
     df= encodeCategorical(df)
     x = df.drop('labels', axis=1)
     y = df.loc[:, ['labels']]
@@ -92,6 +102,6 @@ def get_cols():
     ,'srv_serror_rate','rerror_rate','srv_rerror_rate','same_srv_rate','diff_srv_rate'
     ,'srv_diff_host_rate','dst_host_count','dst_host_srv_count','dst_host_same_srv_rate','dst_host_diff_srv_rate'
     ,'dst_host_same_src_port_rate','dst_host_srv_diff_host_rate','dst_host_serror_rate','dst_host_srv_serror_rate'
-    ,'dst_host_rerror_rate','dst_host_srv_rerror_rate','attack','level'])
+    ,'dst_host_rerror_rate','dst_host_srv_rerror_rate','labels','level'])
     
     return columns

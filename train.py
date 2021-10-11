@@ -96,7 +96,7 @@ if __name__ == "__main__":
 
     bin_history, bin_params = train_binary(X_bin, y_bin)
  
-    # x_multi, y_multi = getattackdata(feature_dim)
+    # x_multi, y_multi = getattackdata(feature_dim, 'ddos')
     
     # print(x_multi.shape)
     # print(y_multi.shape)
