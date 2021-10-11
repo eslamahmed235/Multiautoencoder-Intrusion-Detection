@@ -11,7 +11,8 @@ class MulticlassClassifier:
         import tensorflow.keras as k
         from tensorflow.keras.layers import Input, Dense, BatchNormalization, Dropout
         from tensorflow.keras.models import Model
-        
+        import tensorflow_addons as tfa
+
         input_layer = Input(shape=(self.feature_dim, ))
 
         encoding = self.encoder(input_layer, training=False)
@@ -35,7 +36,7 @@ class MulticlassClassifier:
         output_layer = Dense(self.num_classes, activation="softmax")(layer4)
 
         classifier = Model(inputs=input_layer ,outputs=output_layer)
-        classifier.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy', 'Precision', 'AUC'])
+        classifier.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy', 'Precision', 'AUC', tfa.metrics.F1Score(num_classes=1, average='macro')])
         classifier.summary()
 
         self.classifier = classifier
