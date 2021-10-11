@@ -15,10 +15,10 @@ def train_binary(x, y):
     from models.autoencoders.binaryAE import BinaryAutoencoder
     from models.classifiers.binaryClassifier import BinaryClassifier  
     from sklearn.model_selection import StratifiedKFold
-    
+    import numpy as np
+
     histories = []
     
-
     kf = StratifiedKFold(n_splits=NUM_FOLDS, shuffle=True, random_state=2021) 
     for fold, (train_idx, test_idx) in enumerate(kf.split(x, y)):
         print('-'*15, '>', f'Fold {fold+1}', '<', '-'*15)
@@ -31,16 +31,28 @@ def train_binary(x, y):
 
         b_classifier = BinaryClassifier(encoder= binary_encoder,feature_dim= feature_dim, epochs= clf_epoch, batch_size=32)
         history = b_classifier.train(X_train, y_train, X_valid, y_valid)
+
         histories.append([history])
+
+    enc_trainableParams = np.sum([np.prod(v.get_shape()) for v in binary_encoder.trainable_weights])
+    enc_nonTrainableParams = np.sum([np.prod(v.get_shape()) for v in binary_encoder.non_trainable_weights])
+    enc_totalParams = enc_trainableParams + enc_nonTrainableParams
     
-    return histories
+    clf_trainableParams = np.sum([np.prod(v.get_shape()) for v in b_classifier.classifier.trainable_weights])
+    clf_nonTrainableParams = np.sum([np.prod(v.get_shape()) for v in b_classifier.classifier.non_trainable_weights])
+    clf_totalParams = clf_trainableParams + clf_nonTrainableParams
+    
+    totalParams = enc_totalParams + clf_totalParams
+    
+    return histories, totalParams
 
 def train_multi(x, y):
     from models.autoencoders.multiAE import MultiAutoencoder
     from models.classifiers.multiclassClassifier import MulticlassClassifier
     from keras.utils import np_utils
     from sklearn.model_selection import StratifiedKFold
-    
+    import numpy as np
+
     ycat = np_utils.to_categorical(y)
     histories = []
     
@@ -57,8 +69,18 @@ def train_multi(x, y):
         multi_classifier = MulticlassClassifier(encoder= multi_encoder,feature_dim= feature_dim, num_classes = y_train.shape[1] ,epochs= clf_epoch, batch_size=32)
         history = multi_classifier.train(X_train, y_train, X_valid, y_valid)
         histories.append([history])
+
+    enc_trainableParams = np.sum([np.prod(v.get_shape()) for v in multi_encoder.trainable_weights])
+    enc_nonTrainableParams = np.sum([np.prod(v.get_shape()) for v in multi_encoder.non_trainable_weights])
+    enc_totalParams = enc_trainableParams + enc_nonTrainableParams
+
+    clf_trainableParams = np.sum([np.prod(v.get_shape()) for v in multi_classifier.trainable_weights])
+    clf_nonTrainableParams = np.sum([np.prod(v.get_shape()) for v in multi_classifier.non_trainable_weights])
+    clf_totalParams = clf_trainableParams + clf_nonTrainableParams
     
-    return histories
+    totalParams = enc_totalParams + clf_totalParams
+
+    return histories, totalParams
 
 
 if __name__ == "__main__":
@@ -72,25 +94,27 @@ if __name__ == "__main__":
     # print(y_train.shape)
     # print(y_test.shape)
     
-    X_bin, y_bin = getbinarydata()
+    X_bin, y_bin = getbinarydata(feature_dim)
     
     print(X_bin.shape)
     print(y_bin.shape)
 
-    bin_history = train_binary(X_bin, y_bin)
+    bin_history, bin_params = train_binary(X_bin, y_bin)
  
-    x_multi, y_multi = getattackdata()
+    x_multi, y_multi = getattackdata(feature_dim)
     
     print(x_multi.shape)
     print(y_multi.shape)
 
-    multi_history = train_multi(x_multi, y_multi)
+    multi_history, multi_params = train_multi(x_multi, y_multi)
 
     print('\n\n\n')
     print('Printing Binary Classification histories')
+    print('\nParams: ',bin_params)
     print_histories(bin_history)
-    print('\n\n\n')
+    print('\n\n')
     print('Printing Multiclass Classification histories')
+    print('\nParams: ',multi_params)
     print_histories(multi_history)
 
 

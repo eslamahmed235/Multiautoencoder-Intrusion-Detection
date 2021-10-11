@@ -23,7 +23,7 @@ def getdata():
 
     return X_train, X_test, y_train, y_test
 
-def getbinarydata():
+def getbinarydata(feature_dim):
     import pandas as pd
     import numpy as np
     from sklearn.model_selection import train_test_split
@@ -41,11 +41,11 @@ def getbinarydata():
     
     x = scaleData(x)
 
-    x = reduceFeaturespace(x, y)
+    x = reduceFeaturespace(x, y, feature_dim, 'dtc')
 
     return x, y
 
-def getattackdata():
+def getattackdata(feature_dim):
     import pandas as pd
     import numpy as np
     from sklearn.model_selection import train_test_split
@@ -63,7 +63,7 @@ def getattackdata():
     x = scaleData(x)
     # y = np_utils.to_categorical(y)
     
-    x = reduceFeaturespace(x, y)
+    x = reduceFeaturespace(x, y, feature_dim, 'dtc')
 
     return x, y
 
